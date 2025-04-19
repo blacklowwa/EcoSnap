@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoSnap</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+    img {
+      max-width: 300px;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>EcoSnap 🌿</h1>
+  <input type="file" accept="image/*" id="fileInput" />
+  <div id="result"></div>
+  <img id="preview" src="" alt="" style="display:none"/>
+
+  <script>
+    const input = document.getElementById('fileInput');
+    const resultDiv = document.getElementById('result');
+    const preview = document.getElementById('preview');
+
+    input.addEventListener('change', async () => {
+      const file = input.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+
+      const response = await fetch('http://localhost:8000/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const json = await response.json();
+      resultDiv.innerText = json.message;
+    });
+  </script>
+</body>
+</html>
