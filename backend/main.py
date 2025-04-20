@@ -13,10 +13,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+eco_score_total = 0
+
 @app.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
+    global eco_score_total
     contents = await file.read()
     result = analyze_image(contents)
+    eco_score_total += result["eco_score"]
+    result["total_score"] = eco_score_total
     return result
 
 if __name__ == "__main__":

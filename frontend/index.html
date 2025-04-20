@@ -14,18 +14,26 @@
       max-width: 300px;
       margin-top: 1rem;
     }
+
+    #score {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
   <h1>EcoSnap 🌿</h1>
   <input type="file" accept="image/*" id="fileInput" />
   <div id="result"></div>
+  <div id="score">Экобаллы</div>
   <img id="preview" src="" alt="" style="display:none"/>
 
   <script>
     const input = document.getElementById('fileInput');
     const resultDiv = document.getElementById('result');
     const preview = document.getElementById('preview');
+    const scoreDiv = document.getElementById('score');
 
     input.addEventListener('change', async () => {
       const file = input.files[0];
@@ -44,6 +52,7 @@
 
       const json = await response.json();
       resultDiv.innerText = json.message;
+      scoreDiv.innerText = 'Экобаллы: ${json.total_score}';
     });
   </script>
 </body>
